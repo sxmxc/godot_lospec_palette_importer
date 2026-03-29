@@ -4,12 +4,15 @@ on:
   push:
     branches:
       - main
+      - master
   pull_request:
+  workflow_dispatch:
 
 permissions:
   contents: read
 
 env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: "true"
   GODOT_VERSION: 4.6-stable
   GODOT_RELEASE_REPO: godotengine/godot-builds
   GODOT_ARCHIVE: Godot_v4.6-stable_linux.x86_64.zip
@@ -20,7 +23,7 @@ jobs:
 
     steps:
       - name: Check out repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
 
       - name: Download Godot
         env:

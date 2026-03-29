@@ -9,6 +9,7 @@ permissions:
   contents: write
 
 env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: "true"
   GODOT_VERSION: 4.6-stable
   GODOT_RELEASE_REPO: godotengine/godot-builds
   GODOT_ARCHIVE: Godot_v4.6-stable_linux.x86_64.zip
@@ -19,7 +20,7 @@ jobs:
 
     steps:
       - name: Check out repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
 
       - name: Download Godot
         env:
@@ -47,7 +48,7 @@ jobs:
 
     steps:
       - name: Check out repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
         with:
           fetch-depth: 0
 
@@ -67,7 +68,7 @@ jobs:
           } >> "$GITHUB_OUTPUT"
 
       - name: Upload workflow artifact
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v6
         with:
           name: release-package
           path: |
