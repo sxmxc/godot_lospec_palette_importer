@@ -1,0 +1,46 @@
+name: CI
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+
+permissions:
+  contents: read
+
+env:
+  GODOT_VERSION: 4.6-stable
+  GODOT_RELEASE_REPO: godotengine/godot-builds
+  GODOT_ARCHIVE: Godot_v4.6-stable_linux.x86_64.zip
+
+jobs:
+  validate:
+    runs-on: ubuntu-24.04
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Download Godot
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh release download "$GODOT_VERSION" \
+            --repo "$GODOT_RELEASE_REPO" \
+            --pattern "$GODOT_ARCHIVE"
+
+      - name: Install Godot
+        run: |
+          unzip -q "$GODOT_ARCHIVE" -d "$RUNNER_TEMP/godot"
+          chmod +x "$RUNNER_TEMP/godot/Godot_v4.6-stable_linux.x86_64"
+          echo "$RUNNER_TEMP/godot" >> "$GITHUB_PATH"
+
+      - name: Check Godot version
+        run: Godot_v4.6-stable_linux.x86_64 --version
+
+      - name: Load project in headless editor
+        run: Godot_v4.6-stable_linux.x86_64 --headless --editor --path . --quit
+
+      - name: Run parser smoke tests
+        run: Godot_v4.6-stable_linux.x86_64 --headless --path . -s res://tests/test_palette_import_parser.gd

@@ -1,0 +1,108 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - "v*"
+
+permissions:
+  contents: write
+
+env:
+  GODOT_VERSION: 4.6-stable
+  GODOT_RELEASE_REPO: godotengine/godot-builds
+  GODOT_ARCHIVE: Godot_v4.6-stable_linux.x86_64.zip
+
+jobs:
+  validate:
+    runs-on: ubuntu-24.04
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Download Godot
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh release download "$GODOT_VERSION" \
+            --repo "$GODOT_RELEASE_REPO" \
+            --pattern "$GODOT_ARCHIVE"
+
+      - name: Install Godot
+        run: |
+          unzip -q "$GODOT_ARCHIVE" -d "$RUNNER_TEMP/godot"
+          chmod +x "$RUNNER_TEMP/godot/Godot_v4.6-stable_linux.x86_64"
+          echo "$RUNNER_TEMP/godot" >> "$GITHUB_PATH"
+
+      - name: Load project in headless editor
+        run: Godot_v4.6-stable_linux.x86_64 --headless --editor --path . --quit
+
+      - name: Run parser smoke tests
+        run: Godot_v4.6-stable_linux.x86_64 --headless --path . -s res://tests/test_palette_import_parser.gd
+
+  release:
+    runs-on: ubuntu-24.04
+    needs: validate
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Build release archive
+        id: package
+        env:
+          TAG_NAME: ${{ github.ref_name }}
+        run: |
+          mkdir -p dist
+          ARCHIVE_NAME="lospec_palette_importer-${TAG_NAME}.zip"
+          CHECKSUM_NAME="lospec_palette_importer-${TAG_NAME}-SHA256SUMS.txt"
+          zip -r "dist/${ARCHIVE_NAME}" addons/lospec_palette_importer
+          sha256sum "dist/${ARCHIVE_NAME}" > "dist/${CHECKSUM_NAME}"
+          {
+            echo "archive_name=${ARCHIVE_NAME}"
+            echo "checksum_name=${CHECKSUM_NAME}"
+          } >> "$GITHUB_OUTPUT"
+
+      - name: Upload workflow artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: release-package
+          path: |
+            dist/${{ steps.package.outputs.archive_name }}
+            dist/${{ steps.package.outputs.checksum_name }}
+
+      - name: Publish GitHub release
+        env:
+          GH_TOKEN: ${{ github.token }}
+          TAG_NAME: ${{ github.ref_name }}
+          ARCHIVE_NAME: ${{ steps.package.outputs.archive_name }}
+          CHECKSUM_NAME: ${{ steps.package.outputs.checksum_name }}
+        run: |
+          EXTRA_NOTES=$(cat <<'EOF'
+          ## Package
+          - `addons/lospec_palette_importer` packaged as a ready-to-install ZIP.
+          - `SHA256SUMS.txt` included for checksum verification.
+
+          ## Install
+          1. Download the ZIP asset from this release.
+          2. Extract `addons/lospec_palette_importer` into your Godot project's `addons/` folder.
+          3. Enable **Lospec Palette Importer** in **Project Settings > Plugins**.
+          EOF
+          )
+
+          if gh release view "$TAG_NAME" >/dev/null 2>&1; then
+            gh release upload "$TAG_NAME" \
+              "dist/${ARCHIVE_NAME}#Asset Library package" \
+              "dist/${CHECKSUM_NAME}#SHA-256 checksums" \
+              --clobber
+          else
+            gh release create "$TAG_NAME" \
+              "dist/${ARCHIVE_NAME}#Asset Library package" \
+              "dist/${CHECKSUM_NAME}#SHA-256 checksums" \
+              --verify-tag \
+              --generate-notes \
+              --notes "$EXTRA_NOTES"
+          fi

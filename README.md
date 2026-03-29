@@ -1,5 +1,10 @@
 # Lospec Palette Importer
 
+[![CI](https://github.com/sxmxc/godot_lospec_palette_importer/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/sxmxc/godot_lospec_palette_importer/actions/workflows/ci.yml)
+[![Release](https://github.com/sxmxc/godot_lospec_palette_importer/actions/workflows/release.yml/badge.svg)](https://github.com/sxmxc/godot_lospec_palette_importer/actions/workflows/release.yml)
+[![Latest Release](https://img.shields.io/github/v/release/sxmxc/godot_lospec_palette_importer?display_name=tag)](https://github.com/sxmxc/godot_lospec_palette_importer/releases/latest)
+[![License](https://img.shields.io/github/license/sxmxc/godot_lospec_palette_importer)](LICENSE)
+
 Lospec Palette Importer is a Godot 4.6 editor plugin that adds a dock tab for importing external palette files into built-in `ColorPalette` resources.
 
 ## Features
