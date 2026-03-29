@@ -1,0 +1,151 @@
+[gd_scene format=3 uid="uid://cqyw242sac74e"]
+
+[ext_resource type="Script" uid="uid://b6uvvaetlh5uk" path="res://addons/lospec_palette_importer/lospec_importer_dock.gd" id="1_subb4"]
+
+[node name="LospecImporterDock" type="MarginContainer" unique_id=1252327037]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 8
+theme_override_constants/margin_top = 8
+theme_override_constants/margin_right = 8
+theme_override_constants/margin_bottom = 8
+script = ExtResource("1_subb4")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="." unique_id=894911617]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_constants/separation = 8
+
+[node name="IntroLabel" type="Label" parent="VBoxContainer" unique_id=1316443986]
+layout_mode = 2
+text = "Import palette files into Godot as ColorPalette resources."
+
+[node name="SourceLabel" type="Label" parent="VBoxContainer" unique_id=1402598677]
+layout_mode = 2
+text = "Source File"
+
+[node name="SourceRow" type="HBoxContainer" parent="VBoxContainer" unique_id=1138759649]
+layout_mode = 2
+theme_override_constants/separation = 8
+
+[node name="SourcePathEdit" type="LineEdit" parent="VBoxContainer/SourceRow" unique_id=148562280]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+placeholder_text = "Choose a palette file to import."
+editable = false
+
+[node name="BrowseButton" type="Button" parent="VBoxContainer/SourceRow" unique_id=53241430]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Browse..."
+
+[node name="LospecLabel" type="Label" parent="VBoxContainer" unique_id=372204625]
+layout_mode = 2
+text = "Lospec Slug"
+
+[node name="LospecRow" type="HBoxContainer" parent="VBoxContainer" unique_id=1730304565]
+layout_mode = 2
+theme_override_constants/separation = 8
+
+[node name="LospecSlugEdit" type="LineEdit" parent="VBoxContainer/LospecRow" unique_id=1528550612]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+placeholder_text = "greyt-bit"
+
+[node name="LoadLospecButton" type="Button" parent="VBoxContainer/LospecRow" unique_id=1021319720]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Load from Lospec"
+
+[node name="DetailsGrid" type="GridContainer" parent="VBoxContainer" unique_id=1439964750]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/h_separation = 12
+theme_override_constants/v_separation = 6
+columns = 2
+
+[node name="FormatLabel" type="Label" parent="VBoxContainer/DetailsGrid" unique_id=711153791]
+layout_mode = 2
+text = "Format"
+
+[node name="FormatOption" type="OptionButton" parent="VBoxContainer/DetailsGrid" unique_id=93032878]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+selected = 0
+
+[node name="DetectedLabel" type="Label" parent="VBoxContainer/DetailsGrid" unique_id=749278598]
+layout_mode = 2
+text = "Detected"
+
+[node name="FormatValueLabel" type="Label" parent="VBoxContainer/DetailsGrid" unique_id=896645692]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Unavailable"
+
+[node name="ColorsLabel" type="Label" parent="VBoxContainer/DetailsGrid" unique_id=283394361]
+layout_mode = 2
+text = "Colors"
+
+[node name="ColorCountValueLabel" type="Label" parent="VBoxContainer/DetailsGrid" unique_id=1466488102]
+unique_name_in_owner = true
+layout_mode = 2
+text = "0"
+
+[node name="StatusLabel" type="Label" parent="VBoxContainer" unique_id=1027853040]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Choose a palette file to preview and import."
+
+[node name="PreviewLabel" type="Label" parent="VBoxContainer" unique_id=715807252]
+layout_mode = 2
+text = "Preview"
+
+[node name="PreviewPanel" type="PanelContainer" parent="VBoxContainer" unique_id=1021562432]
+custom_minimum_size = Vector2(0, 220)
+layout_mode = 2
+
+[node name="PreviewMargin" type="MarginContainer" parent="VBoxContainer/PreviewPanel" unique_id=2039284505]
+layout_mode = 2
+theme_override_constants/margin_left = 8
+theme_override_constants/margin_top = 8
+theme_override_constants/margin_right = 8
+theme_override_constants/margin_bottom = 8
+
+[node name="PreviewVBox" type="VBoxContainer" parent="VBoxContainer/PreviewPanel/PreviewMargin" unique_id=796199299]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_constants/separation = 8
+
+[node name="PreviewHintLabel" type="Label" parent="VBoxContainer/PreviewPanel/PreviewMargin/PreviewVBox" unique_id=1819373936]
+unique_name_in_owner = true
+layout_mode = 2
+text = "No palette loaded."
+
+[node name="PreviewScroll" type="ScrollContainer" parent="VBoxContainer/PreviewPanel/PreviewMargin/PreviewVBox" unique_id=1646709872]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 3
+horizontal_scroll_mode = 0
+
+[node name="PreviewGrid" type="GridContainer" parent="VBoxContainer/PreviewPanel/PreviewMargin/PreviewVBox/PreviewScroll" unique_id=1251341589]
+unique_name_in_owner = true
+visible = false
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/h_separation = 4
+theme_override_constants/v_separation = 4
+
+[node name="ActionRow" type="HBoxContainer" parent="VBoxContainer" unique_id=609362378]
+layout_mode = 2
+
+[node name="ImportButton" type="Button" parent="VBoxContainer/ActionRow" unique_id=1223070491]
+unique_name_in_owner = true
+layout_mode = 2
+disabled = true
+text = "Import Palette..."
