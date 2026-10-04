@@ -5,7 +5,7 @@
 [![Release Automation](https://img.shields.io/badge/release-tags-blue)](https://github.com/sxmxc/godot_lospec_palette_importer/actions/workflows/release.yml)
 [![License](https://img.shields.io/github/license/sxmxc/godot_lospec_palette_importer)](LICENSE)
 
-Lospec Palette Importer is a Godot 4.6 editor plugin that adds a dock tab for importing external palette files into built-in `ColorPalette` resources.
+Lospec Palette Importer is a Godot 4.7+ editor plugin that adds a dock tab for importing external palette files into built-in `ColorPalette` resources.
 
 ## Features
 
@@ -17,7 +17,7 @@ Lospec Palette Importer is a Godot 4.6 editor plugin that adds a dock tab for im
 
 ## Requirements
 
-- Godot 4.6 or newer.
+- Godot 4.7 or newer.
 
 ## Installation
 
